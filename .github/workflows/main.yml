@@ -23,3 +23,13 @@ jobs:
             -Dsonar.projectKey=Swiggy
             -Dsonar.projectName=Swiggy
             -Dsonar.sources=.
+
+      - name: Docker build and push
+        run: |
+          # Run commands to build and push Docker images
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 896271372561.dkr.ecr.us-east-1.amazonaws.com
+          docker build -t dock-repo .
+          docker tag dock-repo:latest 896271372561.dkr.ecr.us-east-1.amazonaws.com/dock-repo:latest
+          docker push 896271372561.dkr.ecr.us-east-1.amazonaws.com/dock-repo:latest
+        env:
+          DOCKER_CLI_ACI: 1
